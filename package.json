@@ -1,6 +1,6 @@
 {
   "name": "smartnpm",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "interface with npm to retrieve package information",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
