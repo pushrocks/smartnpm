@@ -5,9 +5,14 @@ interface ISearchObject {
   author?: string
   maintainer: string
   scope?: string
+  keywords: string[]
+  
+  // status
   deprecated?: boolean
   unstable?: boolean
   insecure?: boolean
+  
+  // search behaviour
   boostExact: boolean
   scoreEffect: number
 
@@ -18,7 +23,50 @@ interface ISearchObject {
 }
 
 export class NpmRegistry {
-  search (searchObject: ISearchObject) {
-    let response = await plugins.Smartrequest
+  private searchDomain = 'https://api.npms.io/v2/search?q='
+  search (searchObjectArg: ISearchObject) {
+    let searchString = ''
+    let addToSearchString = (addStringArg: string) => {
+      searchString = `${searchString} ${addStringArg}`
+    }
+
+    // metadata
+    if (searchObjectArg.author) { addToSearchString(`author:${searchObjectArg.author}`) }
+    if (searchObjectArg.maintainer) { addToSearchString(`maintainer:${searchObjectArg.maintainer}`) }
+    if (searchObjectArg.scope) { addToSearchString(`scope:${searchObjectArg.scope}`) }
+    
+    // status
+    if (searchObjectArg.deprecated) {
+      if (searchObjectArg.deprecated === true) {
+        addToSearchString(`is:deprecated`)
+      } else {
+        addToSearchString(`not:deprecated`)
+      }
+    }
+    if (searchObjectArg.unstable) {
+      if (searchObjectArg.unstable === true) {
+        addToSearchString(`is:unstable`)
+      } else {
+        addToSearchString(`not:unstable`)
+      }
+    }
+    if (searchObjectArg.insecure) {
+      if (searchObjectArg.insecure === true) {
+        addToSearchString(`is:insecure`)
+      } else {
+        addToSearchString(`not:insecure`)
+      }
+    }
+    
+    // search behaviour
+    if (searchObjectArg.boostExact) { addToSearchString(`boost-exact:${searchObjectArg.boostExact}`) }
+    if (searchObjectArg.scoreEffect) { addToSearchString(`score-effect:${searchObjectArg.scoreEffect}`) }
+    
+    // analytics
+    if (searchObjectArg.qualityWeight) { addToSearchString(`author:${searchObjectArg.qualityWeight}`) }
+    if (searchObjectArg.popularityWeight) { addToSearchString(`author:${searchObjectArg.popularityWeight}`) }
+    if (searchObjectArg.maintenanceWeight) { addToSearchString(`author:${searchObjectArg.maintenanceWeight}`) }
+
+    let response = (await plugins.smartrequest.get(this.searchDomain, {}))
   }
 }
