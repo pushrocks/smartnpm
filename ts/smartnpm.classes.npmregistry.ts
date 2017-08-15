@@ -1,40 +1,27 @@
 import * as plugins from './smartnpm.plugins'
 
-interface ISearchObject {
-  // metadata
-  author?: string
-  maintainer: string
-  scope?: string
-  keywords: string[]
-  
-  // status
-  deprecated?: boolean
-  unstable?: boolean
-  insecure?: boolean
-  
-  // search behaviour
-  boostExact: boolean
-  scoreEffect: number
+// interfaces
+import { ISearchObject } from './smartnpm.interfaces'
 
-  // Analytics
-  qualityWeight: number
-  popularityWeight: number
-  maintenanceWeight: number
-}
+// classes
+import { NpmPackage } from './smartnpm.classes.npmpackage'
 
 export class NpmRegistry {
   private searchDomain = 'https://api.npms.io/v2/search?q='
-  search (searchObjectArg: ISearchObject) {
+  async search (searchObjectArg: ISearchObject) {
     let searchString = ''
     let addToSearchString = (addStringArg: string) => {
-      searchString = `${searchString} ${addStringArg}`
+      searchString = `${searchString}+${addStringArg}`
     }
+
+    // name
+    if (searchObjectArg.name) { searchString = `${searchObjectArg.name}` }
 
     // metadata
     if (searchObjectArg.author) { addToSearchString(`author:${searchObjectArg.author}`) }
     if (searchObjectArg.maintainer) { addToSearchString(`maintainer:${searchObjectArg.maintainer}`) }
     if (searchObjectArg.scope) { addToSearchString(`scope:${searchObjectArg.scope}`) }
-    
+
     // status
     if (searchObjectArg.deprecated) {
       if (searchObjectArg.deprecated === true) {
@@ -57,16 +44,29 @@ export class NpmRegistry {
         addToSearchString(`not:insecure`)
       }
     }
-    
+
     // search behaviour
     if (searchObjectArg.boostExact) { addToSearchString(`boost-exact:${searchObjectArg.boostExact}`) }
     if (searchObjectArg.scoreEffect) { addToSearchString(`score-effect:${searchObjectArg.scoreEffect}`) }
-    
+
     // analytics
     if (searchObjectArg.qualityWeight) { addToSearchString(`author:${searchObjectArg.qualityWeight}`) }
     if (searchObjectArg.popularityWeight) { addToSearchString(`author:${searchObjectArg.popularityWeight}`) }
     if (searchObjectArg.maintenanceWeight) { addToSearchString(`author:${searchObjectArg.maintenanceWeight}`) }
 
-    let response = (await plugins.smartrequest.get(this.searchDomain, {}))
+    plugins.beautylog.log(`Search for "${searchString}" on npm`)
+
+    let response = (await plugins.smartrequest.get(this.searchDomain + searchString, {}))
+    let body: any = response.body
+    
+    // lets create the response
+    let packageArray: NpmPackage[] = []
+
+    for (let packageArg of body.results) {
+      let localPackage = new NpmPackage(packageArg.package)
+      packageArray.push(localPackage)
+    }
+
+    return packageArray
   }
 }
