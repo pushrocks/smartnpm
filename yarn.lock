@@ -84,6 +84,14 @@ beautycolor@^1.0.7:
     ansi-256-colors "^1.1.0"
     typings-global "^1.0.14"
 
+beautycolor@^1.0.9:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/beautycolor/-/beautycolor-1.0.9.tgz#639eaa83b6b9ca8419f164e42df33e162f839a3b"
+  dependencies:
+    ansi-256-colors "^1.1.0"
+    tapbundle "^1.1.1"
+    typings-global "^1.0.14"
+
 beautylog@^6.1.10:
   version "6.1.10"
   resolved "https://registry.yarnpkg.com/beautylog/-/beautylog-6.1.10.tgz#9c27e566937684cb689f9372d98cfa5415d50b72"
@@ -466,7 +474,7 @@ supports-color@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-2.0.0.tgz#535d045ce6b6363fa40117084629995e9df324c7"
 
-tapbundle@^1.0.13:
+tapbundle@^1.0.13, tapbundle@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/tapbundle/-/tapbundle-1.1.1.tgz#ec4172c0e82a77b1f6133fef2606311ede28a62d"
   dependencies:

@@ -54,7 +54,7 @@ export class NpmRegistry {
     if (searchObjectArg.popularityWeight) { addToSearchString(`author:${searchObjectArg.popularityWeight}`) }
     if (searchObjectArg.maintenanceWeight) { addToSearchString(`author:${searchObjectArg.maintenanceWeight}`) }
 
-    plugins.beautylog.log(`Search for "${searchString}" on npm`)
+    plugins.beautylog.log(`Search on npm for ${plugins.beautycolor.coloredString(searchString, 'pink')}`)
 
     let response = (await plugins.smartrequest.get(this.searchDomain + searchString, {}))
     let body: any = response.body
