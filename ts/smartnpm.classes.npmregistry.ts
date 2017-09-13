@@ -58,10 +58,12 @@ export class NpmRegistry {
 
     let response = (await plugins.smartrequest.get(this.searchDomain + searchString, {}))
     let body: any = response.body
-    
+
     // lets create the response
     let packageArray: NpmPackage[] = []
-
+    if (typeof body === 'string') {
+      return packageArray
+    }
     for (let packageArg of body.results) {
       let localPackage = new NpmPackage(packageArg.package)
       packageArray.push(localPackage)
