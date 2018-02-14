@@ -56,14 +56,23 @@ export class NpmRegistry {
 
     plugins.beautylog.log(`Search on npm for ${plugins.beautycolor.coloredString(searchString, 'pink')}`)
 
-    let response = (await plugins.smartrequest.get(this.searchDomain + searchString, {}))
-    let body: any = response.body
+    let body: any;
+    try {
+      let response = (await plugins.smartrequest.get(this.searchDomain + searchString, {}))
+      body = response.body
+    } catch {
+      // we do nothing
+    }
 
-    // lets create the response
+
+    // lets create the packageArray
     let packageArray: NpmPackage[] = []
-    if (typeof body === 'string') {
+
+    // if request failed just return it empty
+    if (!body || typeof body === 'string') {
       return packageArray
     }
+
     for (let packageArg of body.results) {
       let localPackage = new NpmPackage(packageArg.package)
       packageArray.push(localPackage)

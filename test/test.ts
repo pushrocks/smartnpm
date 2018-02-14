@@ -12,7 +12,7 @@ tap.test('should create valid instances', async () => {
   expect(testPackage).to.be.instanceof(smartnpm.NpmPackage)
 })
 
-tap.test('should produce a valid search string', async () => {
+tap.test('should produce a valid search string and this return npmts', async () => {
   let packages = await testRegistry.search({
     name: 'npmts'
   })
