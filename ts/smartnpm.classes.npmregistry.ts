@@ -54,11 +54,11 @@ export class NpmRegistry {
     if (searchObjectArg.popularityWeight) { addToSearchString(`author:${searchObjectArg.popularityWeight}`) }
     if (searchObjectArg.maintenanceWeight) { addToSearchString(`author:${searchObjectArg.maintenanceWeight}`) }
 
-    plugins.beautylog.log(`Search on npm for ${plugins.beautycolor.coloredString(searchString, 'pink')}`)
+    plugins.smartlog.defaultLogger.info(`Search on npm for ${plugins.consolecolor.coloredString(searchString, 'pink')}`)
 
     let body: any;
     try {
-      let response = (await plugins.smartrequest.get(this.searchDomain + searchString, {}))
+      let response = (await plugins.smartrequest.getJson(this.searchDomain + searchString, {}))
       body = response.body
     } catch {
       // we do nothing

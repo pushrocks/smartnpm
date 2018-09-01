@@ -1,4 +1,4 @@
-import { expect, tap } from 'tapbundle'
+import { expect, tap } from '@pushrocks/tapbundle'
 import * as smartnpm from '../ts/index'
 
 let testRegistry: smartnpm.NpmRegistry

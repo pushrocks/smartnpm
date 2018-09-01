@@ -1,9 +1,6 @@
-import * as beautycolor from 'beautycolor'
-import * as beautylog from 'beautylog'
-import * as smartrequest from 'smartrequest'
+import * as consolecolor from '@pushrocks/consolecolor';
+import * as smartlog from '@pushrocks/smartlog';
+smartlog.defaultLogger.enableConsole();
+import * as smartrequest from '@pushrocks/smartrequest';
 
-export {
-  beautycolor,
-  beautylog,
-  smartrequest
-}
+export { consolecolor, smartlog, smartrequest };
