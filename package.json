@@ -1,6 +1,7 @@
 {
   "name": "@pushrocks/smartnpm",
   "version": "1.0.7",
+  "private": false,
   "description": "interface with npm to retrieve package information",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",

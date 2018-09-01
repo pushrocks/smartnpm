@@ -1,25 +1,24 @@
-
 export interface ISearchObject {
   // name
-  name?: string
+  name?: string;
 
   // metadata
-  author?: string
-  maintainer?: string
-  scope?: string
-  keywords?: string[]
+  author?: string;
+  maintainer?: string;
+  scope?: string;
+  keywords?: string[];
 
   // status
-  deprecated?: boolean
-  unstable?: boolean
-  insecure?: boolean
+  deprecated?: boolean;
+  unstable?: boolean;
+  insecure?: boolean;
 
   // search behaviour
-  boostExact?: boolean
-  scoreEffect?: number
+  boostExact?: boolean;
+  scoreEffect?: number;
 
   // Analytics
-  qualityWeight?: number
-  popularityWeight?: number
-  maintenanceWeight?: number
+  qualityWeight?: number;
+  popularityWeight?: number;
+  maintenanceWeight?: number;
 }
