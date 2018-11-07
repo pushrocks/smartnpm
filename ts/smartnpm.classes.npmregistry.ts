@@ -72,7 +72,8 @@ export class NpmRegistry {
       addToSearchString(`author:${searchObjectArg.maintenanceWeight}`);
     }
 
-    plugins.smartlog.defaultLogger.info(
+    plugins.smartlog.defaultLogger.log(
+      'info',
       `Search on npm for ${plugins.consolecolor.coloredString(searchString, 'pink')}`
     );
 
