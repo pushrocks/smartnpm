@@ -1,6 +1,6 @@
 import * as plugins from './smartnpm.plugins';
 
-export class NpmPackage { 
+export class NpmPackage {
   public static async createFromFullMetadata(fullMetadata: plugins.packageJson.FullMetadata) {
     const npmPackage = new NpmPackage();
     Object.assign(npmPackage, fullMetadata);
