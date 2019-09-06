@@ -6,11 +6,39 @@ import { ISearchObject } from './smartnpm.interfaces';
 // classes
 import { NpmPackage } from './smartnpm.classes.npmpackage';
 
+export interface INpmRegistryConstructorOptions {
+  npmRegistryUrl?: string;
+}
+
 export class NpmRegistry {
+  public options: INpmRegistryConstructorOptions;
+  public registry: string;
   private searchDomain = 'https://api.npms.io/v2/search?q=';
-  async search(searchObjectArg: ISearchObject) {
+
+  constructor(optionsArg: INpmRegistryConstructorOptions = {}) {
+    const defaultOptions: INpmRegistryConstructorOptions = {
+      npmRegistryUrl: 'https://registry.npmjs.org'
+    };
+    this.options = {
+      ...defaultOptions,
+      ...optionsArg
+    };
+  }
+
+  public async getPackageInfo(packageName: string) {
+    const result = await plugins.packageJson(packageName, {
+      registryUrl: this.options.npmRegistryUrl,
+      fullMetadata: true
+    });
+    return result;
+  }
+
+  public async search(searchObjectArg: ISearchObject) {
+    if (this.options.npmRegistryUrl !== 'https://registry.npmjs.org') {
+      throw Error(`cannot search registries other than registry.gitlab.com`);
+    }
     let searchString = '';
-    let addToSearchString = (addStringArg: string) => {
+    const addToSearchString = (addStringArg: string) => {
       searchString = `${searchString}+${addStringArg}`;
     };
 
@@ -79,22 +107,22 @@ export class NpmRegistry {
 
     let body: any;
     try {
-      let response = await plugins.smartrequest.getJson(this.searchDomain + searchString, {});
+      const response = await plugins.smartrequest.getJson(this.searchDomain + searchString, {});
       body = response.body;
     } catch {
       // we do nothing
     }
 
     // lets create the packageArray
-    let packageArray: NpmPackage[] = [];
+    const packageArray: NpmPackage[] = [];
 
     // if request failed just return it empty
     if (!body || typeof body === 'string') {
       return packageArray;
     }
 
-    for (let packageArg of body.results) {
-      let localPackage = new NpmPackage(packageArg.package);
+    for (const packageArg of body.results) {
+      const localPackage = new NpmPackage(packageArg.package);
       packageArray.push(localPackage);
     }
 

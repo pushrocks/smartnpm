@@ -2,5 +2,15 @@
   "npmci": {
     "npmGlobalTools": [],
     "npmAccessLevel": "public"
+  },
+  "gitzone": {
+    "module": {
+      "githost": "gitlab.com",
+      "gitscope": "pushrocks",
+      "gitrepo": "smartnpm",
+      "shortDescription": "interface with npm to retrieve package information",
+      "npmPackagename": "@pushrocks/smartnpm",
+      "license": "MIT"
+    }
   }
 }
