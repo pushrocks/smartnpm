@@ -11,15 +11,15 @@ tap.test('should create valid instances', async () => {
   npmRegistry = new smartnpm.NpmRegistry();
   expect(npmRegistry).to.be.instanceof(smartnpm.NpmRegistry);
 
-  testPackage = new smartnpm.NpmPackage({});
+  testPackage = new smartnpm.NpmPackage();
   expect(testPackage).to.be.instanceof(smartnpm.NpmPackage);
 });
 
 tap.test('should produce a valid search string and this return npmts', async () => {
   const packages = await npmRegistry.search({
-    name: 'npmts'
+    name: '@pushrocks/smartupdate'
   });
-  expect(packages[0].name).to.equal('npmts');
+  expect(packages[0].name).to.equal('@pushrocks/smartupdate');
 });
 
 // lets test things with the verdaccio registry
@@ -31,8 +31,8 @@ tap.test('should create a verdaccio registry', async () => {
 });
 
 tap.test('should get package from verdaccui', async () => {
-  const packageInfo = await verdaccioRegistry.getPackageInfo('@pushrocks/smartupdate');
-  expect(packageInfo.license).to.equal('MIT');
+  const npmPackage = await verdaccioRegistry.getPackageInfo('@pushrocks/smartupdate');
+  expect(npmPackage.license).to.equal('MIT');
 });
 
 tap.start();

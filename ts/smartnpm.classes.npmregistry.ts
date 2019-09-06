@@ -25,12 +25,13 @@ export class NpmRegistry {
     };
   }
 
-  public async getPackageInfo(packageName: string) {
-    const result = await plugins.packageJson(packageName, {
+  public async getPackageInfo(packageName: string): Promise<NpmPackage> {
+    const fullMetadata = await plugins.packageJson(packageName, {
       registryUrl: this.options.npmRegistryUrl,
       fullMetadata: true
     });
-    return result;
+    const npmPackage = await NpmPackage.createFromFullMetadata(fullMetadata);
+    return npmPackage;
   }
 
   public async search(searchObjectArg: ISearchObject) {
@@ -121,9 +122,9 @@ export class NpmRegistry {
       return packageArray;
     }
 
-    for (const packageArg of body.results) {
-      const localPackage = new NpmPackage(packageArg.package);
-      packageArray.push(localPackage);
+    for (const packageSearchInfoArg of body.results) {
+      const npmPackage = await this.getPackageInfo(packageSearchInfoArg.package.name);
+      packageArray.push(npmPackage);
     }
 
     return packageArray;

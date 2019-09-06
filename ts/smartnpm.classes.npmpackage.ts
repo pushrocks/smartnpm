@@ -1,27 +1,35 @@
 import * as plugins from './smartnpm.plugins';
 
-export class NpmPackage {
-  name: string = null;
-  scope: string = null;
-  version: string = null;
-  description: string = null;
-  keywords: string[] = null;
-  date: '2017-08-02T11:22:49.144Z';
-  links: {
+export class NpmPackage { 
+  public static async createFromFullMetadata(fullMetadata: plugins.packageJson.FullMetadata) {
+    const npmPackage = new NpmPackage();
+    Object.assign(npmPackage, fullMetadata);
+    return npmPackage;
+  }
+
+  // INSTANCE
+  public name: string = null;
+  public scope: string = null;
+  public version: string = null;
+  public description: string = null;
+  public keywords: string[] = null;
+  public date: string;
+  public license: string;
+  public links: {
     npm: string;
     homepage: string;
     repository: string;
     bugs: string;
-  } = null;
-  author: {
+  };
+  public author: {
     name: 'Lossless GmbH';
-  } = null;
-  publisher: {
+  };
+  public publisher: {
     username: 'gitzone';
     email: 'npm@git.zone';
-  } = null;
-  maintainers: any = null;
-  score: {
+  };
+  public maintainers: any = null;
+  public score: {
     final: number;
     detail: {
       quality: number;
@@ -29,13 +37,5 @@ export class NpmPackage {
       maintenance: number;
     };
   } = null;
-  searchScore: number = null;
-
-  constructor(descriptionArg) {
-    for (let key in descriptionArg) {
-      if (this[key] === null) {
-        this[key] = descriptionArg[key];
-      }
-    }
-  }
+  public searchScore: number = null;
 }
