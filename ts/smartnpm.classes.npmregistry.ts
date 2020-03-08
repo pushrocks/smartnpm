@@ -30,7 +30,7 @@ export class NpmRegistry {
       registryUrl: this.options.npmRegistryUrl,
       fullMetadata: true
     });
-    const npmPackage = await NpmPackage.createFromFullMetadata(fullMetadata);
+    const npmPackage = await NpmPackage.createFromFullMetadata(this, fullMetadata);
     return npmPackage;
   }
 

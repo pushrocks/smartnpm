@@ -1,7 +1,8 @@
 import * as plugins from './smartnpm.plugins';
+import { NpmRegistry } from './smartnpm.classes.npmregistry';
 
 export class NpmPackage {
-  public static async createFromFullMetadata(fullMetadata: plugins.packageJson.FullMetadata) {
+  public static async createFromFullMetadata(npmRegistry: NpmRegistry, fullMetadata: plugins.packageJson.FullMetadata) {
     const npmPackage = new NpmPackage();
     Object.assign(npmPackage, fullMetadata);
     return npmPackage;
