@@ -1,4 +1,5 @@
 import * as plugins from './smartnpm.plugins';
+import * as paths from './smartnpm.paths';
 
 // interfaces
 import { ISearchObject } from './smartnpm.interfaces';
@@ -25,6 +26,10 @@ export class NpmRegistry {
     };
   }
 
+  /**
+   * gets info about a package
+   * @param packageName
+   */
   public async getPackageInfo(packageName: string): Promise<NpmPackage> {
     const fullMetadata = await plugins.packageJson(packageName, {
       registryUrl: this.options.npmRegistryUrl,
@@ -34,7 +39,35 @@ export class NpmRegistry {
     return npmPackage;
   }
 
-  public async search(searchObjectArg: ISearchObject) {
+  /**
+   * saves a package to disk
+   * @param packageName
+   * @param targetDir
+   */
+  public async savePackageToDisk(packageName: string, targetDir: string): Promise<void> {
+    const npmPackage = await this.getPackageInfo(packageName);
+    await npmPackage.saveToDisk(targetDir);
+  }
+
+  /**
+   * gets a file from a package as Smartfile
+   */
+  public async getFileFromPackage(packageName: string, filePath: string) {
+    const baseDir = plugins.path.join(paths.nogitDir, packageName.replace('/', '__'));
+    await plugins.smartfile.fs.ensureDir(baseDir);
+    await this.savePackageToDisk(packageName, baseDir);
+    const smartfile = await plugins.smartfile.Smartfile.fromFilePath(
+      plugins.path.join(baseDir, 'package', filePath)
+    );
+    await plugins.smartfile.fs.remove(baseDir);
+    return smartfile;
+  }
+
+  /**
+   * searches for a package on npm
+   * @param searchObjectArg
+   */
+  public async searchOnNpm(searchObjectArg: ISearchObject) {
     if (this.options.npmRegistryUrl !== 'https://registry.npmjs.org') {
       throw Error(`cannot search registries other than registry.gitlab.com`);
     }
