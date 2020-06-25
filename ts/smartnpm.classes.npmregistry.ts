@@ -18,11 +18,11 @@ export class NpmRegistry {
 
   constructor(optionsArg: INpmRegistryConstructorOptions = {}) {
     const defaultOptions: INpmRegistryConstructorOptions = {
-      npmRegistryUrl: 'https://registry.npmjs.org'
+      npmRegistryUrl: 'https://registry.npmjs.org',
     };
     this.options = {
       ...defaultOptions,
-      ...optionsArg
+      ...optionsArg,
     };
   }
 
@@ -33,7 +33,7 @@ export class NpmRegistry {
   public async getPackageInfo(packageName: string): Promise<NpmPackage> {
     const fullMetadata = await plugins.packageJson(packageName, {
       registryUrl: this.options.npmRegistryUrl,
-      fullMetadata: true
+      fullMetadata: true,
     });
     const npmPackage = await NpmPackage.createFromFullMetadata(this, fullMetadata);
     return npmPackage;
@@ -134,9 +134,8 @@ export class NpmRegistry {
       addToSearchString(`author:${searchObjectArg.maintenanceWeight}`);
     }
 
-    plugins.smartlog.defaultLogger.log(
-      'info',
-      `Search on npm for ${plugins.consolecolor.coloredString(searchString, 'pink')}`
+    console.log(
+      `info: Search on npm for ${plugins.consolecolor.coloredString(searchString, 'pink')}`
     );
 
     let body: any;
