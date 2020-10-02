@@ -17,7 +17,7 @@ tap.test('should create valid instances', async () => {
 
 tap.test('should produce a valid search string and this return npmts', async () => {
   const packages = await npmRegistry.searchOnNpm({
-    name: '@pushrocks/smartupdate'
+    name: '@pushrocks/smartupdate',
   });
   expect(packages[0].name).to.equal('@pushrocks/smartupdate');
 });
@@ -25,7 +25,7 @@ tap.test('should produce a valid search string and this return npmts', async () 
 // lets test things with the verdaccio registry
 tap.test('should create a verdaccio registry', async () => {
   verdaccioRegistry = new NpmRegistry({
-    npmRegistryUrl: 'https://verdaccio.lossless.one'
+    npmRegistryUrl: 'https://verdaccio.lossless.one',
   });
   expect(verdaccioRegistry).to.be.instanceOf(smartnpm.NpmRegistry);
 });
