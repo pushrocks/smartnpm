@@ -52,15 +52,24 @@ export class NpmRegistry {
   /**
    * gets a file from a package as Smartfile
    */
-  public async getFileFromPackage(packageName: string, filePath: string) {
-    const baseDir = plugins.path.join(paths.nogitDir, packageName.replace('/', '__'));
+  public async getFileFromPackage(packageNameArg: string, filePath: string) {
+    const baseDir = plugins.path.join(paths.nogitDir, packageNameArg.replace('/', '__'));
     await plugins.smartfile.fs.ensureDir(baseDir);
-    await this.savePackageToDisk(packageName, baseDir);
+    await this.savePackageToDisk(packageNameArg, baseDir);
     const smartfile = await plugins.smartfile.Smartfile.fromFilePath(
       plugins.path.join(baseDir, 'package', filePath)
     );
     await plugins.smartfile.fs.remove(baseDir);
     return smartfile;
+  }
+
+  public async getPackageAsSmartfileVirtualDir(packageNameArg: string): Promise<plugins.smartfile.VirtualDirectory> {
+    const baseDir = plugins.path.join(paths.nogitDir, packageNameArg.replace('/', '__'));
+    await plugins.smartfile.fs.ensureDir(baseDir);
+    await this.savePackageToDisk(packageNameArg, baseDir);
+    const virtualDir = await plugins.smartfile.VirtualDirectory.fromFsDirPath(baseDir);
+    await plugins.smartfile.fs.remove(baseDir);
+    return virtualDir;
   }
 
   /**
